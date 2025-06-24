@@ -40,6 +40,17 @@ builder.Services.AddSwaggerGen(c =>
     }
 });
 
+// Configurar CORS para permitir qualquer origem
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configurar pipeline HTTP
@@ -58,6 +69,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthorization();
 
 // Mapear controllers
